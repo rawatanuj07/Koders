@@ -18,8 +18,11 @@ export function Navbar() {
     setLoading(true);
     try {
       await fetch("/api/logout", { method: "POST" });
-      logout();
+      logout(); // clear Zustand user state
       router.push("/");
+      router.refresh();
+
+      setLoading(false);
     } catch (error) {
       console.error("Logout failed:", error);
       setLoading(false);
