@@ -5,15 +5,26 @@ import Link from "next/link";
 import { Calendar, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUserStore } from "@/store/userStore";
-
-interface NavbarProps {
-  onLogout?: () => void;
-}
-
-export function Navbar({ onLogout }: NavbarProps) {
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+export function Navbar() {
   const user = useUserStore((state) => state.user);
+  const logout = useUserStore((state) => state.logout);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
   console.log("User in Navbar:", user);
-
+  const onLogout = async () => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      await fetch("/api/logout", { method: "POST" });
+      logout();
+      router.push("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      setLoading(false);
+    }
+  };
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -69,11 +80,17 @@ export function Navbar({ onLogout }: NavbarProps) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="cursor-pointer"
                   onClick={onLogout}
+                  disabled={loading}
                 >
-                  <LogOut className="w-4 h-4 mr-2 " />
-                  Logout
+                  {loading ? (
+                    "Logging out..."
+                  ) : (
+                    <>
+                      <LogOut className="w-4 h-4 mr-2 cursor-pointer" />
+                      Logout
+                    </>
+                  )}
                 </Button>
               </>
             ) : (
