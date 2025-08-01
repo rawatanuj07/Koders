@@ -10,7 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 // Importing our server action
 import { loginUser } from "./actions";
-import Dots from "@/components/dots";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -39,8 +38,6 @@ export default function LoginPage() {
             }}
           />
         ))}
-
-        {/* <Dots /> */}
       </div>
 
       {/* Floating Shapes */}
@@ -185,7 +182,7 @@ export default function LoginPage() {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-4 bg-white text-black">
-                  Don't have an account?
+                  Don`&apos;`t have an account?
                 </span>
               </div>
             </motion.div>
@@ -216,7 +213,7 @@ export default function LoginPage() {
           className="text-center mt-6"
         >
           <p className="text-white/80 text-sm">
-            🚀 Ready to discover amazing events? Let's get started!
+            🚀 Ready to discover amazing events? Let`&apos;`s get started!
           </p>
         </motion.div>
       </motion.div>

@@ -39,6 +39,7 @@ export async function middleware(request: NextRequest) {
     requestHeaders.set("x-user-id", payload.id as string);
     return NextResponse.next({ request: { headers: requestHeaders } });
   } catch (err) {
+    console.error("JWT verification failed:", err);
     return NextResponse.redirect(new URL("/login", request.url));
   }
 }

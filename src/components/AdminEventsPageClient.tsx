@@ -11,52 +11,6 @@ import { Modal } from "@/components/Modal";
 import type { Event } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 
-// Mock events data
-// const mockEvents: Event[] = [
-//   {
-//     id: "1",
-//     title: "Tech Innovation Summit 2024",
-//     description:
-//       "Join industry leaders discussing the future of technology and innovation.",
-//     category: "Tech",
-//     capacity: 500,
-//     bookedSeats: 342,
-//     date: "2024-03-15",
-//     time: "09:00",
-//     mode: "in-person",
-//     location: "San Francisco Convention Center",
-//     status: "upcoming",
-//   },
-//   {
-//     id: "2",
-//     title: "Digital Marketing Masterclass",
-//     description: "Learn advanced digital marketing strategies from experts.",
-//     category: "Business",
-//     capacity: 100,
-//     bookedSeats: 87,
-//     date: "2024-03-20",
-//     time: "14:00",
-//     mode: "online",
-//     location: "Virtual Event",
-//     status: "upcoming",
-//   },
-//   {
-//     id: "3",
-//     title: "Jazz Night Live",
-//     description: "An evening of smooth jazz with renowned artists.",
-//     category: "Music",
-//     capacity: 200,
-//     bookedSeats: 200,
-//     date: "2024-02-25",
-//     time: "19:30",
-//     mode: "in-person",
-//     location: "Blue Note Jazz Club",
-//     status: "completed",
-//   },
-// ];
-interface AdminEventsPageClientProps {
-  initialEvents: Event[];
-}
 export default function AdminEventsPageClient({
   initialEvents,
   deleteEvent,
@@ -243,7 +197,7 @@ export default function AdminEventsPageClient({
                 onClick={() => confirmDeleteEvent(selectedEvent)}
                 className="flex-1 text-black"
               >
-                Yes, Delete Event
+                {isPending ? "Deleting..." : "Yes, Delete Event"}
               </Button>
               <Button
                 variant="outline"

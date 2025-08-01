@@ -9,16 +9,20 @@ interface UserPayload {
   role: string;
 }
 
-function isUserPayload(payload: any): payload is UserPayload {
+function isUserPayload(payload: unknown): payload is UserPayload {
   return (
-    payload &&
-    typeof payload.id === "string" &&
-    typeof payload.username === "string" &&
-    typeof payload.email === "string" &&
-    typeof payload.role === "string"
+    typeof payload === "object" &&
+    payload !== null &&
+    "id" in payload &&
+    typeof (payload as any).id === "string" &&
+    "username" in payload &&
+    typeof (payload as any).username === "string" &&
+    "email" in payload &&
+    typeof (payload as any).email === "string" &&
+    "role" in payload &&
+    typeof (payload as any).role === "string"
   );
 }
-
 export default async function HomePage() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;

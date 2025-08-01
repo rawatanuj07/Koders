@@ -2,7 +2,6 @@
 import clientPromise from "@/app/libs/mongodb";
 import { EventForm } from "@/components/EventForm";
 import type { Event } from "@/lib/types";
-import { ObjectId } from "mongodb";
 import { redirect } from "next/navigation";
 
 interface EditEventPageProps {
