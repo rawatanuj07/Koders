@@ -10,6 +10,7 @@ import { EventCard3D } from "@/components/EventCard3D";
 import { Navbar } from "@/components/Navbar";
 import { useEffect } from "react";
 import { useUserStore } from "@/store/userStore";
+import { useRouter } from "next/navigation";
 
 // Mock data for preview
 const mockEvents = [
@@ -61,14 +62,25 @@ interface HomePageClientProps {
 }
 export default function HomePageClient({ user }: HomePageClientProps) {
   const setUser = useUserStore((state) => state.setUser);
+  const router = useRouter();
+  const logout = useUserStore((state) => state.logout);
 
+  const onLogout = async () => {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+      logout(); // clear Zustand user state
+      router.push("/"); // redirect after logout
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
   useEffect(() => {
     if (user) setUser(user);
     else setUser(null);
   }, [user, setUser]);
   return (
     <div className="min-h-screen">
-      <Navbar />
+      <Navbar onLogout={onLogout} />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 px-4">

@@ -79,7 +79,9 @@ export function Navbar({ onLogout }: NavbarProps) {
             ) : (
               <>
                 <Link href="/login">
-                  <Button variant="outline">Login</Button>
+                  <Button variant="outline" className="cursor-pointer">
+                    Login
+                  </Button>
                 </Link>
                 <Link href="/register">
                   <Button variant="outline">Get Started!</Button>
