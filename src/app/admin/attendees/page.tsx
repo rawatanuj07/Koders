@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Users, Download, Mail } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { formatDate } from "@/lib/utils"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Users, Download, Mail } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { formatDate } from "@/lib/utils";
 
 // Mock attendees data
 const mockAttendees = [
@@ -40,22 +40,29 @@ const mockAttendees = [
     bookingTime: "2024-02-18T09:15:00Z",
     status: "confirmed",
   },
-]
+];
 
 const mockEvents = [
   { id: "1", title: "Tech Innovation Summit 2024" },
   { id: "2", title: "Digital Marketing Masterclass" },
   { id: "3", title: "Jazz Night Live" },
-]
+];
 
 export default function AttendeesPage() {
-  const [selectedEventId, setSelectedEventId] = useState("all")
+  const [selectedEventId, setSelectedEventId] = useState("all");
 
   const filteredAttendees =
-    selectedEventId === "all" ? mockAttendees : mockAttendees.filter((attendee) => attendee.eventId === selectedEventId)
+    selectedEventId === "all"
+      ? mockAttendees
+      : mockAttendees.filter(
+          (attendee) => attendee.eventId === selectedEventId
+        );
 
-  const totalAttendees = filteredAttendees.length
-  const totalSeats = filteredAttendees.reduce((sum, attendee) => sum + attendee.seatsBooked, 0)
+  const totalAttendees = filteredAttendees.length;
+  const totalSeats = filteredAttendees.reduce(
+    (sum, attendee) => sum + attendee.seatsBooked,
+    0
+  );
 
   return (
     <div>
@@ -76,7 +83,9 @@ export default function AttendeesPage() {
         transition={{ duration: 0.6, delay: 0.1 }}
         className="mb-6"
       >
-        <label className="block text-sm font-medium text-gray-700 mb-2">Select Event</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Select Event
+        </label>
         <select
           value={selectedEventId}
           onChange={(e) => setSelectedEventId(e.target.value)}
@@ -102,8 +111,12 @@ export default function AttendeesPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Attendees</p>
-                  <p className="text-3xl font-bold text-blue-600">{totalAttendees}</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Total Attendees
+                  </p>
+                  <p className="text-3xl font-bold text-blue-600">
+                    {totalAttendees}
+                  </p>
                 </div>
                 <Users className="w-8 h-8 text-blue-500" />
               </div>
@@ -120,8 +133,12 @@ export default function AttendeesPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Seats</p>
-                  <p className="text-3xl font-bold text-green-600">{totalSeats}</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Total Seats
+                  </p>
+                  <p className="text-3xl font-bold text-green-600">
+                    {totalSeats}
+                  </p>
                 </div>
                 <Badge className="text-lg px-3 py-1">{totalSeats}</Badge>
               </div>
@@ -141,7 +158,11 @@ export default function AttendeesPage() {
                   <Download className="w-4 h-4 mr-2" />
                   Export CSV
                 </Button>
-                <Button size="sm" variant="outline" className="flex-1 bg-transparent">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="flex-1 bg-transparent"
+                >
                   <Mail className="w-4 h-4 mr-2" />
                   Email All
                 </Button>
@@ -166,12 +187,24 @@ export default function AttendeesPage() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Name</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Email</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Event</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Seats</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Booking Date</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Status</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">
+                      Name
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">
+                      Email
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">
+                      Event
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">
+                      Seats
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">
+                      Booking Date
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">
+                      Status
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -184,14 +217,21 @@ export default function AttendeesPage() {
                       className="border-b border-gray-100 hover:bg-gray-50"
                     >
                       <td className="py-3 px-4">{attendee.userName}</td>
-                      <td className="py-3 px-4 text-gray-600">{attendee.userEmail}</td>
+                      <td className="py-3 px-4 text-gray-600">
+                        {attendee.userEmail}
+                      </td>
                       <td className="py-3 px-4">{attendee.eventTitle}</td>
                       <td className="py-3 px-4">
                         <Badge variant="outline">{attendee.seatsBooked}</Badge>
                       </td>
-                      <td className="py-3 px-4 text-gray-600">{formatDate(new Date(attendee.bookingTime))}</td>
+                      <td className="py-3 px-4 text-gray-600">
+                        {formatDate(new Date(attendee.bookingTime))}
+                      </td>
                       <td className="py-3 px-4">
-                        <Badge variant="success" className="capitalize">
+                        <Badge
+                          variant="default"
+                          className="capitalize text-green-600"
+                        >
                           {attendee.status}
                         </Badge>
                       </td>
@@ -204,7 +244,9 @@ export default function AttendeesPage() {
                 <div className="text-center py-12">
                   <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                   <p className="text-gray-500 text-lg">No attendees found</p>
-                  <p className="text-gray-400 mt-2">Attendees will appear here once they register for events.</p>
+                  <p className="text-gray-400 mt-2">
+                    Attendees will appear here once they register for events.
+                  </p>
                 </div>
               )}
             </div>
@@ -212,5 +254,5 @@ export default function AttendeesPage() {
         </Card>
       </motion.div>
     </div>
-  )
+  );
 }
