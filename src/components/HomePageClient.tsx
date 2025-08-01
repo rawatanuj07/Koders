@@ -246,7 +246,7 @@ export default function HomePageClient({ user }: HomePageClientProps) {
           >
             <h2 className="text-4xl font-bold mb-4">Featured Events</h2>
             <p className="text-xl text-gray-600">
-              Don`&apos;`t miss these amazing upcoming events
+              Don&apos;t miss these amazing upcoming events
             </p>
           </motion.div>
 
