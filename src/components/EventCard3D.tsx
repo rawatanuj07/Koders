@@ -1,36 +1,35 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Calendar, MapPin, Users } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import type { Event } from "@/lib/types"
-import { formatDate } from "@/lib/utils"
+import { motion } from "framer-motion";
+import { Calendar, MapPin, Users } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import type { Event } from "@/lib/types";
+import { formatDate } from "@/lib/utils";
 
 interface EventCard3DProps {
-  event: Event
-  onBook?: (eventId: string) => void
-  showBookButton?: boolean
+  event: Event;
+  onBook?: (eventId: string) => void;
+  showBookButton?: boolean;
 }
 
-export function EventCard3D({ event, onBook, showBookButton = true }: EventCard3DProps) {
-  const availableSeats = event.capacity - event.bookedSeats
-  const isFullyBooked = availableSeats <= 0
+export function EventCard3D({
+  event,
+  onBook,
+  showBookButton = true,
+}: EventCard3DProps) {
+  const availableSeats = event.capacity - event.bookedSeats;
+  const isFullyBooked = availableSeats <= 0;
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "upcoming":
-        return "success"
-      case "ongoing":
-        return "warning"
-      case "completed":
-        return "secondary"
-      default:
-        return "default"
-    }
+  function getStatusColor(
+    status: string
+  ): "default" | "secondary" | "outline" | "destructive" {
+    if (status === "upcoming") return "secondary";
+    if (status === "pending") return "outline";
+    if (status === "cancelled") return "destructive";
+    return "default";
   }
-
   return (
     <motion.div
       whileHover={{
@@ -53,7 +52,10 @@ export function EventCard3D({ event, onBook, showBookButton = true }: EventCard3
         <div className="relative h-48 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500">
           <div className="absolute inset-0 bg-black/20" />
           <div className="absolute top-4 left-4">
-            <Badge variant={getStatusColor(event.status)} className="capitalize">
+            <Badge
+              variant={getStatusColor(event.status)}
+              className="capitalize"
+            >
               {event.status}
             </Badge>
           </div>
@@ -65,7 +67,9 @@ export function EventCard3D({ event, onBook, showBookButton = true }: EventCard3
         </div>
 
         <CardContent className="p-6">
-          <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">{event.title}</h3>
+          <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">
+            {event.title}
+          </h3>
           <p className="text-gray-600 mb-4 line-clamp-2">{event.description}</p>
 
           <div className="space-y-2 mb-4">
@@ -84,18 +88,26 @@ export function EventCard3D({ event, onBook, showBookButton = true }: EventCard3
           </div>
 
           {showBookButton && (
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
               <Button
                 className="w-full"
                 disabled={isFullyBooked || event.status === "completed"}
                 onClick={() => onBook?.(event.id)}
               >
-                {isFullyBooked ? "Fully Booked" : event.status === "completed" ? "Event Ended" : "Book Now"}
+                {isFullyBooked
+                  ? "Fully Booked"
+                  : event.status === "completed"
+                  ? "Event Ended"
+                  : "Book Now"}
               </Button>
             </motion.div>
           )}
         </CardContent>
       </Card>
     </motion.div>
-  )
+  );
 }
