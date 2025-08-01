@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Event } from "@/lib/types";
+import Link from "next/link";
 
 interface EventFormProps {
   event?: Event;
@@ -266,9 +267,9 @@ export function EventForm({
               </Button>
               {/* Cancel button as Link */}
               <Button asChild variant="outline" className="flex-1">
-                <a href="/admin/events" className="w-full block text-center">
+                <Link href="/admin/events" className="w-full block text-center">
                   Cancel
-                </a>
+                </Link>
               </Button>
             </div>
           </form>
