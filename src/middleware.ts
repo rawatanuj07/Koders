@@ -3,6 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
 export async function middleware(request: NextRequest) {
+  //   const isDev = process.env.NODE_ENV === "development";
+
+  //   // Skip auth check in development
+  //   if (isDev) {
+  //     return NextResponse.next();
+  //   }
   const token = request.cookies.get("token")?.value;
 
   if (!token) {

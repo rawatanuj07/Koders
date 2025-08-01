@@ -1,6 +1,6 @@
 "use server";
 import bcryptjs from "bcryptjs";
-import clientPromise from "@/app/lib/mongodb";
+import clientPromise from "@/app/libs/mongodb";
 import { redirect } from "next/navigation";
 
 export async function addUser(formData: FormData) {
@@ -20,6 +20,7 @@ export async function addUser(formData: FormData) {
     .insertOne({
       username,
       email,
+      role: "user", // Default role for new users
       password: hashedPassword,
       createdAt: new Date(),
     })

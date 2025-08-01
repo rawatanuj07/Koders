@@ -2,7 +2,7 @@
 
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import clientPromise from "@/app/lib/mongodb";
+import clientPromise from "@/app/libs/mongodb";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -33,6 +33,7 @@ export async function loginUser(formData: FormData) {
     id: user._id,
     username: user.username,
     email: user.email,
+    role: user.role,
   };
 
   const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, {
@@ -44,6 +45,5 @@ export async function loginUser(formData: FormData) {
     maxAge: 60 * 60 * 24,
     path: "/",
   });
-
-  redirect("/dashboard");
+  redirect("/");
 }
