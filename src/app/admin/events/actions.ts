@@ -1,3 +1,4 @@
+"use server";
 import clientPromise from "@/app/libs/mongodb";
 export async function deleteEventById(eventId: string) {
   const client = await clientPromise;
