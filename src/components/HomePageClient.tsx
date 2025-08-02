@@ -200,7 +200,7 @@ export default function HomePageClient({ user }: HomePageClientProps) {
       </section>
 
       {/* Categories Section */}
-      <section className="py-20 px-4 bg-gray-50/50">
+      {/* <section className="py-20 px-4 bg-pink-50/50">
         <div className="container mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -210,6 +210,51 @@ export default function HomePageClient({ user }: HomePageClientProps) {
           >
             <h2 className="text-4xl font-bold mb-4">Explore Categories</h2>
             <p className="text-xl text-gray-600">
+              Find events that match your interests
+            </p>
+          </motion.div>
+
+          <div className="flex flex-wrap justify-center gap-4 mb-16">
+            {categories.map((category, index) => (
+              <motion.div
+                key={category}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <Badge
+                  variant="outline"
+                  className="px-6 py-3 text-lg cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition-colors"
+                >
+                  {category}
+                </Badge>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section> */}
+
+      <section
+        className="relative py-20 px-4 bg-pink-50/50 bg-fixed bg-center bg-cover"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1531058020387-3be344556be6?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+        }}
+      >
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black opacity-30 pointer-events-none"></div>
+
+        {/* Content container with relative z-index */}
+        <div className="relative container mx-auto h-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold mb-4">Explore Categories</h2>
+            <p className="text-xl text-gray-100">
               Find events that match your interests
             </p>
           </motion.div>

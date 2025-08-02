@@ -47,18 +47,30 @@ export function Navbar() {
 
           <div className="flex space-x-4 overflow-x-auto whitespace-nowrap mx-4 scrollbar-hide">
             <Link href="/">
-              <Button variant="ghost" size="sm">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="hover:cursor-pointer"
+              >
                 Home
               </Button>
             </Link>
             <Link href="/events">
-              <Button variant="ghost" size="sm">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="hover:cursor-pointer"
+              >
                 Events
               </Button>
             </Link>
             {user && (
               <Link href={user.role === "admin" ? "/admin" : "/dashboard"}>
-                <Button variant="ghost" size="sm">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="hover:cursor-pointer"
+                >
                   Dashboard
                 </Button>
               </Link>

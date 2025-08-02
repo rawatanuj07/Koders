@@ -3,7 +3,7 @@ import clientPromise from "@/app/libs/mongodb";
 import { EventForm } from "@/components/EventForm";
 import type { Event } from "@/lib/types";
 import { redirect } from "next/navigation";
-
+import { updateEvent } from "@/app/libs/db/events"; // Import the server action
 interface EditEventPageProps {
   params: Promise<{
     id: string;
@@ -51,46 +51,46 @@ export default async function EditEventPage({ params }: EditEventPageProps) {
 }
 
 // Server Action for updating existing event
-async function updateEvent(formData: FormData) {
-  "use server";
-  try {
-    const id = formData.get("id")?.toString();
-    if (!id) throw new Error("Event ID is required");
+// async function updateEvent(formData: FormData) {
+//   "use server";
+//   try {
+//     const id = formData.get("id")?.toString();
+//     if (!id) throw new Error("Event ID is required");
 
-    const title = formData.get("title")?.toString() || "";
-    const description = formData.get("description")?.toString() || "";
-    const category = formData.get("category")?.toString() || "Tech";
-    const capacityStr = formData.get("capacity")?.toString() || "100";
-    const capacity = parseInt(capacityStr, 10);
-    const date = formData.get("date")?.toString() || "";
-    const time = formData.get("time")?.toString() || "";
-    const mode = formData.get("mode")?.toString() || "in-person";
-    const location = formData.get("location")?.toString() || "";
-    const status = formData.get("status")?.toString() || "upcoming";
+//     const title = formData.get("title")?.toString() || "";
+//     const description = formData.get("description")?.toString() || "";
+//     const category = formData.get("category")?.toString() || "Tech";
+//     const capacityStr = formData.get("capacity")?.toString() || "100";
+//     const capacity = parseInt(capacityStr, 10);
+//     const date = formData.get("date")?.toString() || "";
+//     const time = formData.get("time")?.toString() || "";
+//     const mode = formData.get("mode")?.toString() || "in-person";
+//     const location = formData.get("location")?.toString() || "";
+//     const status = formData.get("status")?.toString() || "upcoming";
 
-    const client = await clientPromise;
-    const db = client.db("koders");
-    const eventsCollection = db.collection("events");
+//     const client = await clientPromise;
+//     const db = client.db("koders");
+//     const eventsCollection = db.collection("events");
 
-    await eventsCollection.updateOne(
-      { id: id },
-      {
-        $set: {
-          title,
-          description,
-          category,
-          capacity,
-          date,
-          time,
-          mode,
-          location,
-          status,
-        },
-      }
-    );
-  } catch (error) {
-    console.error("Error updating event:", error);
-    throw new Error("Failed to update event");
-  }
-  redirect("/admin/events");
-}
+//     await eventsCollection.updateOne(
+//       { id: id },
+//       {
+//         $set: {
+//           title,
+//           description,
+//           category,
+//           capacity,
+//           date,
+//           time,
+//           mode,
+//           location,
+//           status,
+//         },
+//       }
+//     );
+//   } catch (error) {
+//     console.error("Error updating event:", error);
+//     throw new Error("Failed to update event");
+//   }
+//   redirect("/admin/events");
+// }

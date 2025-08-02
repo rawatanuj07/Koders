@@ -1,72 +1,72 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Clock, MapPin, Users } from "lucide-react";
+import { useUserStore } from "@/store/userStore";
 import { Navbar } from "@/components/Navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookingStatusBadge } from "@/components/BookingStatusBadge";
 import { Modal } from "@/components/Modal";
 import { formatDate } from "@/lib/utils";
+
 type BookingStatus = "confirmed" | "cancelled";
 
 type Booking = {
   id: string;
   eventId: string;
   eventTitle: string;
-  eventDate: string;
+  eventDate: string; // ISO date string
   eventTime: string;
   eventLocation: string;
   seatsBooked: number;
-  bookingTime: string;
+  bookingTime: string; // ISO date string
   status: BookingStatus;
 };
 
-// Mock user bookings data
-const mockBookings: Booking[] = [
-  {
-    id: "1",
-    eventId: "1",
-    eventTitle: "Tech Innovation Summit 2024",
-    eventDate: "2024-03-15",
-    eventTime: "09:00",
-    eventLocation: "San Francisco Convention Center",
-    seatsBooked: 2,
-    bookingTime: "2024-02-15T10:30:00Z",
-    status: "confirmed" as const,
-  },
-  {
-    id: "2",
-    eventId: "2",
-    eventTitle: "Digital Marketing Masterclass",
-    eventDate: "2024-03-20",
-    eventTime: "14:00",
-    eventLocation: "Virtual Event",
-    seatsBooked: 1,
-    bookingTime: "2024-02-18T15:45:00Z",
-    status: "confirmed" as const,
-  },
-  {
-    id: "3",
-    eventId: "3",
-    eventTitle: "Jazz Night Live",
-    eventDate: "2024-03-25",
-    eventTime: "19:30",
-    eventLocation: "Blue Note Jazz Club",
-    seatsBooked: 2,
-    bookingTime: "2024-02-20T09:15:00Z",
-    status: "confirmed" as const,
-  },
-];
-
 export default function DashboardPage() {
-  const [bookings, setBookings] = useState<Booking[]>(mockBookings);
-  const [selectedBooking, setSelectedBooking] = useState<
-    (typeof mockBookings)[0] | null
-  >(null);
+  const user = useUserStore((state) => state.user);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
+  // Fetch bookings for logged in user
+  useEffect(() => {
+    async function fetchBookings() {
+      if (!user) {
+        setBookings([]);
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        // Adjust the endpoint as per your API design, auth might be needed.
+        const response = await fetch(`/api/guestBooking?userId=${user.id}`);
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch bookings: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log("Fetched bookings:", data); // Debugging log
+        // Expecting: { bookings: Booking[] }
+        setBookings(data.bookings);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : "Unknown error");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchBookings();
+  }, [user]);
+
+  // Cancel booking modal handlers
   const handleCancelBooking = (bookingId: string) => {
     const booking = bookings.find((b) => b.id === bookingId);
     if (booking) {
@@ -75,26 +75,64 @@ export default function DashboardPage() {
     }
   };
 
-  const confirmCancelBooking = () => {
-    if (selectedBooking) {
+  const confirmCancelBooking = async () => {
+    if (!selectedBooking) return;
+
+    try {
+      console.log("Cancelling booking:", selectedBooking.id);
+      const response = await fetch(`/api/guestCancel/${selectedBooking.id}`, {
+        method: "POST",
+      });
+
+      const data = await response.json();
+      console.log("Cancel booking response:", data); // Debugging log
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to cancel booking");
+      }
+
+      // Update UI state locally to reflect the cancelled status
       setBookings((prev) =>
         prev.map((booking) =>
           booking.id === selectedBooking.id
-            ? { ...booking, status: "cancelled" as const }
+            ? { ...booking, status: "cancelled" }
             : booking
         )
       );
-      setIsCancelModalOpen(false);
       setSelectedBooking(null);
+      setIsCancelModalOpen(false);
+    } catch (err: unknown) {
+      console.log("Error cancelling booking:", err);
+      alert(err instanceof Error ? err.message : String(err));
     }
   };
 
-  const upcomingBookings = bookings.filter((b) => b.status === "confirmed");
+  // Stats calculations
+  const totalBookings = bookings.length;
+  // Active (confirmed) bookings count
+  const activeBookingsCount = bookings.filter(
+    (b) => b.status === "confirmed"
+  ).length;
+
+  // Cancelled bookings count
+  const cancelledBookingsCount = bookings.filter(
+    (b) => b.status === "cancelled"
+  ).length;
+  const upcomingBookings = bookings.filter(
+    (b) => b.status === "confirmed" && new Date(b.eventDate) > new Date()
+  );
   const totalSeatsBooked = bookings.reduce(
     (sum, booking) => sum + booking.seatsBooked,
     0
   );
+  // Active seats
+  const activeSeats = bookings
+    .filter((b) => b.status === "confirmed")
+    .reduce((sum, b) => sum + b.seatsBooked, 0);
 
+  // Cancelled seats
+  const cancelledSeats = bookings
+    .filter((b) => b.status === "cancelled")
+    .reduce((sum, b) => sum + b.seatsBooked, 0);
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -106,9 +144,13 @@ export default function DashboardPage() {
           transition={{ duration: 0.6 }}
         >
           <h1 className="text-4xl font-bold mb-2">My Dashboard</h1>
-          <p className="text-gray-600 mb-8">
+          <p className="text-gray-200 mb-8">
             Manage your event bookings and preferences
           </p>
+          {loading && (
+            <p className="text-sm text-gray-500">Loading bookings...</p>
+          )}
+          {error && <p className="text-sm text-red-500">Error: {error}</p>}
         </motion.div>
 
         {/* Stats Cards */}
@@ -122,7 +164,7 @@ export default function DashboardPage() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">
+                    <p className="text-sm font-medium text-gray-200">
                       Total Bookings
                     </p>
                     <motion.p
@@ -131,8 +173,16 @@ export default function DashboardPage() {
                       animate={{ opacity: 1 }}
                       transition={{ duration: 1, delay: 0.5 }}
                     >
-                      {bookings.length}
+                      {totalBookings}
                     </motion.p>
+                    <div className="flex gap-4 mt-2 text-sm">
+                      <div className="text-green-600">
+                        Active: {activeBookingsCount}
+                      </div>
+                      <div className="text-red-600">
+                        Cancelled: {cancelledBookingsCount}
+                      </div>
+                    </div>
                   </div>
                   <Calendar className="w-8 h-8 text-blue-500" />
                 </div>
@@ -147,9 +197,9 @@ export default function DashboardPage() {
           >
             <Card>
               <CardContent className="p-6">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center h-full justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">
+                    <p className="text-sm font-medium text-gray-200">
                       Upcoming Events
                     </p>
                     <motion.p
@@ -176,7 +226,7 @@ export default function DashboardPage() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">
+                    <p className="text-sm font-medium text-gray-200">
                       Total Seats
                     </p>
                     <motion.p
@@ -187,7 +237,16 @@ export default function DashboardPage() {
                     >
                       {totalSeatsBooked}
                     </motion.p>
+                    <div className="flex gap-4 mt-2 text-sm">
+                      <div className="text-green-600">
+                        Active: {activeSeats}
+                      </div>
+                      <div className="text-red-600">
+                        Cancelled: {cancelledSeats}
+                      </div>
+                    </div>
                   </div>
+
                   <Users className="w-8 h-8 text-purple-500" />
                 </div>
               </CardContent>
@@ -195,7 +254,7 @@ export default function DashboardPage() {
           </motion.div>
         </div>
 
-        {/* Bookings List */}
+        {/* My Bookings List */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -220,7 +279,7 @@ export default function DashboardPage() {
                         <h3 className="text-lg font-semibold mb-2">
                           {booking.eventTitle}
                         </h3>
-                        <div className="space-y-1 text-sm text-gray-600">
+                        <div className="space-y-1 text-sm text-gray-200">
                           <div className="flex items-center">
                             <Calendar className="w-4 h-4 mr-2" />
                             {formatDate(new Date(booking.eventDate))} at{" "}
@@ -257,7 +316,7 @@ export default function DashboardPage() {
                   </motion.div>
                 ))}
 
-                {bookings.length === 0 && (
+                {bookings.length === 0 && !loading && (
                   <div className="text-center py-12">
                     <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                     <p className="text-gray-500 text-lg">No bookings yet</p>
@@ -280,18 +339,16 @@ export default function DashboardPage() {
       >
         {selectedBooking && (
           <div className="space-y-4">
-            <p className="text-gray-600">
+            <p className="text-gray-200">
               Are you sure you want to cancel your booking for{" "}
               <strong>{selectedBooking.eventTitle}</strong>?
             </p>
-
             <div className="bg-red-50 p-4 rounded-lg">
               <p className="text-sm text-red-800">
                 <strong>Note:</strong> This action cannot be undone. You will
                 lose your reserved seats.
               </p>
             </div>
-
             <div className="flex gap-3">
               <Button
                 variant="destructive"
