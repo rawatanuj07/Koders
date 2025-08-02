@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -11,8 +11,12 @@ interface FilterBarProps {
   onSearch: (query: string) => void;
   onCategoryFilter: (category: string) => void;
   onModeFilter: (mode: string) => void;
+  onStartDateFilter?: (startDate: string) => void;
+  onEndDateFilter?: (endDate: string) => void;
   selectedCategory?: string;
   selectedMode?: string;
+  startDate?: string; // added prop for controlled input
+  endDate?: string; // added prop for controlled input
 }
 
 const categories = [
@@ -30,14 +34,28 @@ export function FilterBar({
   onSearch,
   onCategoryFilter,
   onModeFilter,
+  onStartDateFilter,
+  onEndDateFilter,
   selectedCategory = "All",
   selectedMode = "All",
+  startDate = "",
+  endDate = "",
 }: FilterBarProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Synchronize searchQuery with onSearch callback
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     onSearch(e.target.value);
+  };
+
+  // Pass date changes up
+  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onStartDateFilter?.(e.target.value);
+  };
+
+  const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onEndDateFilter?.(e.target.value);
   };
 
   return (
@@ -55,7 +73,7 @@ export function FilterBar({
 
       {/* Category Filters */}
       <div className="space-y-2">
-        <h3 className="text-sm font-medium text-gray-700 flex items-center">
+        <h3 className="text-sm font-medium text-gray-200 flex items-center">
           <Filter className="w-4 h-4 mr-2" />
           Categories
         </h3>
@@ -80,7 +98,7 @@ export function FilterBar({
 
       {/* Mode Filters */}
       <div className="space-y-2">
-        <h3 className="text-sm font-medium text-gray-700">Event Mode</h3>
+        <h3 className="text-sm font-medium text-gray-300">Event Mode</h3>
         <div className="flex flex-wrap gap-2">
           {modes.map((mode) => (
             <Badge
@@ -93,6 +111,37 @@ export function FilterBar({
               {mode}
             </Badge>
           ))}
+        </div>
+      </div>
+
+      {/* Date Range Filter */}
+      <div className="space-y-2">
+        <h3 className="text-sm font-medium text-gray-300">Date Range</h3>
+        <div className="flex gap-2 items-center">
+          <div className="flex flex-col">
+            <label htmlFor="start-date" className="text-xs text-gray-400 mb-1">
+              From
+            </label>
+            <input
+              id="start-date"
+              type="date"
+              value={startDate}
+              onChange={handleStartDateChange}
+              className="p-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="end-date" className="text-xs text-gray-400 mb-1">
+              To
+            </label>
+            <input
+              id="end-date"
+              type="date"
+              value={endDate}
+              onChange={handleEndDateChange}
+              className="p-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm"
+            />
+          </div>
         </div>
       </div>
     </div>

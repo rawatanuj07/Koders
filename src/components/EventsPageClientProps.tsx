@@ -24,23 +24,56 @@ export default function EventsPageClient({
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [seatsToBook, setSeatsToBook] = useState(1);
 
+  // Date range filter state
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  // User from store
   const user = useUserStore((state) => state.user);
+
+  // Filter events based on all filters, including date range
   const filteredEvents = useMemo(() => {
     return initialEvents.filter((event) => {
       const matchesSearch =
         event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         event.description.toLowerCase().includes(searchQuery.toLowerCase());
+
       const matchesCategory =
         selectedCategory === "All" || event.category === selectedCategory;
+
       const matchesMode =
         selectedMode === "All" ||
         (selectedMode === "Online" && event.mode === "online") ||
         (selectedMode === "In-person" && event.mode === "in-person");
 
-      return matchesSearch && matchesCategory && matchesMode;
-    });
-  }, [initialEvents, searchQuery, selectedCategory, selectedMode]);
+      // Parse event date string (assumed ISO string)
+      const eventDate = new Date(event.date);
 
+      // Parse filter dates
+      const start = startDate ? new Date(startDate) : null;
+      const end = endDate ? new Date(endDate) : null;
+
+      const matchesStartDate = start ? eventDate >= start : true;
+      const matchesEndDate = end ? eventDate <= end : true;
+
+      return (
+        matchesSearch &&
+        matchesCategory &&
+        matchesMode &&
+        matchesStartDate &&
+        matchesEndDate
+      );
+    });
+  }, [
+    initialEvents,
+    searchQuery,
+    selectedCategory,
+    selectedMode,
+    startDate,
+    endDate,
+  ]);
+
+  // Handle booking modal open
   const handleBookEvent = (eventId: string) => {
     const event = initialEvents.find((e) => e.id === eventId);
     if (event) {
@@ -48,6 +81,8 @@ export default function EventsPageClient({
       setIsBookingModalOpen(true);
     }
   };
+
+  // Confirm booking API call
   const handleConfirmBooking = async () => {
     if (!selectedEvent || !user) {
       alert("Event or user not found.");
@@ -61,7 +96,7 @@ export default function EventsPageClient({
         body: JSON.stringify({
           eventId: selectedEvent.id,
           userId: user.id,
-          seatsBooked: seatsToBook, // or choose how many seats
+          seatsBooked: seatsToBook,
         }),
       });
 
@@ -73,7 +108,7 @@ export default function EventsPageClient({
 
       setIsBookingModalOpen(false);
       setSelectedEvent(null);
-      // Refetch or update events UI state as needed
+      // Refetch events or update UI as needed
     } catch (err: unknown) {
       alert(err instanceof Error ? err.message : String(err));
     }
@@ -90,7 +125,7 @@ export default function EventsPageClient({
           transition={{ duration: 0.6 }}
         >
           <h1 className="text-4xl font-bold mb-2">Discover Events</h1>
-          <p className="text-gray-600 mb-8">
+          <p className="text-gray-300 mb-8">
             Find and book amazing events near you
           </p>
         </motion.div>
@@ -105,11 +140,15 @@ export default function EventsPageClient({
           >
             <div className="sticky top-24">
               <FilterBar
+                selectedCategory={selectedCategory}
+                selectedMode={selectedMode}
+                startDate={startDate}
+                endDate={endDate}
                 onSearch={setSearchQuery}
                 onCategoryFilter={setSelectedCategory}
                 onModeFilter={setSelectedMode}
-                selectedCategory={selectedCategory}
-                selectedMode={selectedMode}
+                onStartDateFilter={setStartDate}
+                onEndDateFilter={setEndDate}
               />
             </div>
           </motion.div>
@@ -189,6 +228,9 @@ export default function EventsPageClient({
                 <span className="font-medium">Available Seats:</span>{" "}
                 {selectedEvent.capacity - selectedEvent.bookedSeats}
               </p>
+              <p className="text-red-700 bg-black rounded-lg p-2 text-center">
+                max number seats that can be booked is 2.
+              </p>
               <input
                 type="number"
                 min={1}
@@ -196,12 +238,9 @@ export default function EventsPageClient({
                 value={seatsToBook}
                 onChange={(e) => {
                   let value = parseInt(e.target.value, 10);
-
-                  // Validate to keep value within [1, 2]
                   if (isNaN(value)) value = 1;
                   if (value < 1) value = 1;
                   if (value > 2) value = 2;
-
                   setSeatsToBook(value);
                 }}
                 className="w-full p-2 border border-gray-300 rounded-lg"

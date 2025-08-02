@@ -259,7 +259,7 @@ export default function HomePageClient({ user }: HomePageClientProps) {
             </p>
           </motion.div>
 
-          <div className="flex flex-wrap justify-center gap-4 mb-16">
+          <div className="flex flex-wrap  justify-center gap-4 mb-16">
             {categories.map((category, index) => (
               <motion.div
                 key={category}
@@ -270,7 +270,7 @@ export default function HomePageClient({ user }: HomePageClientProps) {
               >
                 <Badge
                   variant="outline"
-                  className="px-6 py-3 text-lg cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition-colors"
+                  className="px-6 py-3 text-lg md:text-xl bg-gray-700 py-2 md:mx-4 cursor-pointer hover:text-black  hover:bg-blue-50 hover:border-blue-300 transition-colors"
                 >
                   {category}
                 </Badge>
@@ -295,7 +295,7 @@ export default function HomePageClient({ user }: HomePageClientProps) {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2   lg:grid-cols-3 gap-8">
             {mockEvents.map((event, index) => (
               <motion.div
                 key={event.id}
