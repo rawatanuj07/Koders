@@ -1,6 +1,8 @@
 # EventEase – Event Booking Platform
 
 A full-stack event booking platform built with Next.js.
+Live Hosted Link: https://koders-nextjs.vercel.app/
+admin-role: username- bat password:qwert
 
 ## 🚀 Installation
 
@@ -19,14 +21,14 @@ pnpm install
 or  
 bun install
 
-3. Create a `.env.local` file in the root of the project with your environment variables.  
-   **Note:** This file **will not** be committed to GitHub for security reasons.  
+3. Create a `.env.` file in the root of the project with the following environment variables.  
    Replace the values below with your own API/backend URLs or any other required config:
 
-NEXT_PUBLIC_API_URL=your_api_url_here  
-NEXT_PUBLIC_ANOTHER_ENV_VAR=your_value_here
+MONGODB_URI=your_URI_here  
+TOKEN_SECRET=your_value_here
+MONGODB_DB=your_value_here
 
-> This setup assumes you will connect to your own backend or API endpoint.
+> This setup assumes you will connect to your own database.
 
 4. Run the development server:
 
