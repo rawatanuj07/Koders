@@ -70,14 +70,14 @@ export default function RegisterPage() {
               </span>
             </motion.div>
 
-            <CardTitle className="text-3xl font-bold text-gray-800 mb-2">
+            <CardTitle className="text-3xl font-bold text-gray-200 mb-2">
               Create Account
             </CardTitle>
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-gray-600"
+              className="text-gray-200"
             >
               Join thousands of event enthusiasts
             </motion.p>
@@ -90,16 +90,16 @@ export default function RegisterPage() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-100 mb-2">
                   Username
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-100 w-5 h-5" />
                   <Input
                     type="text"
                     name="username"
                     placeholder="Enter your username"
-                    className="pl-10 h-12 bg-white/50 border-white/30 focus:bg-white/80 transition-all duration-300"
+                    className="pl-10 h-12 bg-black/50 border-white/30 focus:bg-black/80 transition-all duration-300"
                     required
                   />
                 </div>
@@ -110,16 +110,16 @@ export default function RegisterPage() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-100 mb-2">
                   Email Address
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-100 w-5 h-5" />
                   <Input
                     type="email"
                     name="email"
                     placeholder="Enter your email"
-                    className="pl-10 h-12 bg-white/50 border-white/30 focus:bg-white/80 transition-all duration-300"
+                    className="pl-10 h-12 bg-black/30 border-white/30 focus:bg-white/80 transition-all duration-300"
                     required
                   />
                 </div>
@@ -130,16 +130,16 @@ export default function RegisterPage() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
               >
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-100 mb-2">
                   Password
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white w-5 h-5" />
                   <Input
                     type="password"
                     name="password"
                     placeholder="Create a strong password"
-                    className="pl-10 h-12 bg-white/50 border-white/30 focus:bg-white/80 transition-all duration-300"
+                    className="pl-10 h-12 bg-black/30 border-white/30 focus:bg-white/80 transition-all duration-300"
                     required
                   />
                 </div>
@@ -152,7 +152,7 @@ export default function RegisterPage() {
               >
                 <Button
                   type="submit"
-                  className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
+                  className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-purple-700 to-blue-700 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
                 >
                   Create Account
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -183,8 +183,8 @@ export default function RegisterPage() {
             >
               <Link href="/login">
                 <Button
-                  variant="outline"
-                  className="w-full h-12 text-lg font-medium bg-white/50 border-white/30 hover:bg-white/80 transition-all duration-300 group"
+                  type="submit"
+                  className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
                 >
                   Sign In Instead
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />

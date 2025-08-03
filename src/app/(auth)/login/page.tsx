@@ -98,7 +98,7 @@ export default function LoginPage() {
                     type="email"
                     name="email"
                     placeholder="Enter your email"
-                    className="pl-10 h-12 bg-white/50 border-white/30 focus:bg-white/80 transition-all duration-300"
+                    className="pl-10 h-12 bg-transparent border-white/30  transition-all duration-300"
                     required
                   />
                 </div>
@@ -118,7 +118,7 @@ export default function LoginPage() {
                     type={showPassword ? "text" : "password"}
                     name="password"
                     placeholder="Enter your password"
-                    className="pl-10 pr-10 h-12 bg-white/50 border-white/30 focus:bg-white/80 transition-all duration-300"
+                    className="pl-10 pr-10 h-12 bg-black border-white/30 focus:bg-black/80 transition-all duration-300"
                     required
                   />
                   <button
@@ -194,8 +194,8 @@ export default function LoginPage() {
             >
               <Link href="/register">
                 <Button
-                  variant="outline"
-                  className="w-full h-12 text-lg font-medium bg-white/50 border-white/30 hover:bg-white/80 transition-all duration-300 group"
+                  type="submit"
+                  className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
                 >
                   Create Account
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -213,7 +213,7 @@ export default function LoginPage() {
           className="text-center mt-6"
         >
           <p className="text-white/80 text-sm">
-            🚀 Ready to discover amazing events? Let`&apos;`s get started!
+            🚀 Ready to discover amazing events? Let&apos;s get started!
           </p>
         </motion.div>
       </motion.div>
