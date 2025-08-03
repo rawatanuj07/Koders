@@ -139,7 +139,14 @@ export default function HomePageClient({ user }: HomePageClientProps) {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-4">
+      <section
+        className="py-20 px-4 bg-gray-900"
+        // style={{
+        //   backgroundImage:
+        //     "url('https://images.unsplash.com/photo-1614850523011-8f49ffc73908?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+        //   backgroundSize: "cover",
+        // }}
+      >
         <div className="container mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -148,7 +155,7 @@ export default function HomePageClient({ user }: HomePageClientProps) {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold mb-4">Why Choose EventEase?</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-100 max-w-2xl mx-auto">
               Experience the future of event booking with our cutting-edge
               platform
             </p>
@@ -182,7 +189,7 @@ export default function HomePageClient({ user }: HomePageClientProps) {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 whileHover={{ y: -5 }}
               >
-                <Card className="text-center p-8 h-full">
+                <Card className="text-center p-8 h-full bg-black/20 backdrop-blur-md hover:shadow-lg transition-shadow">
                   <CardContent>
                     <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
                       <feature.icon className="w-8 h-8 text-white" />
@@ -190,7 +197,7 @@ export default function HomePageClient({ user }: HomePageClientProps) {
                     <h3 className="text-xl font-semibold mb-4">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-600">{feature.description}</p>
+                    <p className="text-gray-200">{feature.description}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -281,7 +288,12 @@ export default function HomePageClient({ user }: HomePageClientProps) {
       </section>
 
       {/* Featured Events */}
-      <section className="py-20 px-4">
+      <section
+        className="py-20 px-4 "
+        style={{
+          backgroundColor: "rgba(255, 255, 255, 0.05)",
+        }}
+      >
         <div className="container mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -290,7 +302,7 @@ export default function HomePageClient({ user }: HomePageClientProps) {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold mb-4">Featured Events</h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-100">
               Don&apos;t miss these amazing upcoming events
             </p>
           </motion.div>
@@ -325,7 +337,7 @@ export default function HomePageClient({ user }: HomePageClientProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+      <section className="py-20 px-4 bg-gradient-to-r from-gray-1000 via-purple-900 to-red-800 text-white">
         <div className="container mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

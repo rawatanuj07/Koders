@@ -16,7 +16,6 @@ type UserStore = {
 export const useUserStore = create<UserStore>((set) => ({
   user: null,
   setUser: (user) => {
-    console.log("Zustand setUser called with:", user);
     set({ user });
   },
   logout: () => set({ user: null }),

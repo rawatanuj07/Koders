@@ -45,7 +45,6 @@ export default function DashboardPage() {
       setError(null);
 
       try {
-        // Adjust the endpoint as per your API design, auth might be needed.
         const response = await fetch(`/api/guestBooking?userId=${user.id}`);
 
         if (!response.ok) {
@@ -53,8 +52,7 @@ export default function DashboardPage() {
         }
 
         const data = await response.json();
-        console.log("Fetched bookings:", data); // Debugging log
-        // Expecting: { bookings: Booking[] }
+
         setBookings(data.bookings);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : "Unknown error");

@@ -12,7 +12,7 @@ export function Navbar() {
   const logout = useUserStore((state) => state.logout);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  console.log("User in Navbar:", user);
+
   const onLogout = async () => {
     if (loading) return;
     setLoading(true);
@@ -32,7 +32,7 @@ export function Navbar() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className="sticky top-0 z-40 w-full bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#0f172a] backdrop-blur-md shadow-sm"
+      className="sticky top-0 z-40 w-full bg-gradient-to-r from-gray-1000 via-purple-900 to-red-800 backdrop-blur-sm shadow-sm"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">

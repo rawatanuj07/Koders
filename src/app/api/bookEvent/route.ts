@@ -1,4 +1,3 @@
-// app/api/bookEvent/route.ts
 import clientPromise from "@/app/libs/mongodb";
 import { NextResponse } from "next/server";
 
@@ -17,18 +16,35 @@ export async function POST(request: Request) {
   }
 
   try {
+    const allowedStatuses = ["confirmed", "pending", "rescheduled"]; // define statuses that count towards seat limit
+
     const client = await clientPromise;
     const db = client.db("koders");
     const eventsCollection = db.collection("events");
     const bookingsCollection = db.collection("bookings");
 
-    // 1. Check existing user bookings
-    const existingBooking = await bookingsCollection.findOne({
-      eventId,
-      userId,
-    });
-    const previousSeats = existingBooking?.seatsBooked || 0;
-    if (previousSeats + seatsBooked > 2) {
+    // 1. Aggregation: sum booked seats of current user for this event with allowed statuses
+    const aggregationResult = await bookingsCollection
+      .aggregate([
+        {
+          $match: {
+            eventId,
+            userId,
+            status: { $in: allowedStatuses },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            totalSeatsBooked: { $sum: "$seatsBooked" },
+          },
+        },
+      ])
+      .toArray();
+
+    const seatsAlreadyBooked = aggregationResult[0]?.totalSeatsBooked || 0;
+
+    if (seatsAlreadyBooked + seatsBooked > 2) {
       return NextResponse.json(
         { error: "Cannot book more than 2 seats per event" },
         { status: 400 }
@@ -47,7 +63,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 3. Increment bookedSeats atomically
+    // 3. Increment bookedSeats atomically (safe concurrency)
     const updateResult = await eventsCollection.updateOne(
       { id: eventId, bookedSeats: { $lte: event.capacity - seatsBooked } },
       { $inc: { bookedSeats: seatsBooked } }
@@ -59,16 +75,24 @@ export async function POST(request: Request) {
       );
     }
 
-    // 4. Insert or update booking for user
+    // 4. Insert or update booking
+    const existingBooking = await bookingsCollection.findOne({
+      eventId,
+      userId,
+      status: { $in: allowedStatuses },
+    });
+
     if (existingBooking) {
+      // Update existing booking seats and time
       await bookingsCollection.updateOne(
-        { eventId, userId },
+        { _id: existingBooking._id },
         {
           $inc: { seatsBooked: seatsBooked },
           $set: { bookingTime: new Date() },
         }
       );
     } else {
+      // Insert new booking document
       await bookingsCollection.insertOne({
         eventId,
         userId,
@@ -78,14 +102,13 @@ export async function POST(request: Request) {
       });
     }
 
-    // 5. Log booking info (simulating middleware)
     console.log(
       `[Booking Log] User: ${userId} booked ${seatsBooked} seat(s) for ${eventId} at ${new Date().toISOString()}`
     );
 
     return NextResponse.json({
       success: true,
-      bookedSeats: previousSeats + seatsBooked,
+      bookedSeats: seatsAlreadyBooked + seatsBooked,
     });
   } catch (error) {
     console.error("Booking error:", error);

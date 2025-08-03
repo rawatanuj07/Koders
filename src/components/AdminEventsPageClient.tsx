@@ -52,7 +52,7 @@ export default function AdminEventsPageClient({
 
   return (
     <div>
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -60,14 +60,75 @@ export default function AdminEventsPageClient({
       >
         <div>
           <h1 className="text-3xl font-bold mb-2">Manage Events</h1>
-          <p className="text-gray-600">Create, edit, and manage your events</p>
+          <p className="text-gray-300 underline underline-offset-4">
+            Create, edit, and manage your events
+          </p>
         </div>
         <Link href="/admin/events/new">
-          <Button className="flex items-center">
-            <Plus className="w-4 h-4 mr-2" />
+          <Button className="flex items-left border border-sky-500 text-sky-400 text-2xl cursor-pointer hover:scale-110 transition-transform">
+            <Plus className="w-6 h-6 " />
             Create Event
           </Button>
         </Link>
+      </motion.div> */}
+      {/* <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="flex justify-between items-center mb-8"
+      >
+        <div className="flex flex-row">
+          <div>
+            <h1 className="text-3xl font-bold mb-1 text-white">
+              Manage Events
+            </h1>
+            <p className="text-gray-200 underline underline-offset-4 mb-2">
+              Create, edit, and manage your events
+            </p>
+          </div>
+          <div className=" align-right justify-right items-right ">
+            <p className="text-sky-400  font-semibold italic">
+              Ready to make your next event unforgettable? Click below to get
+              started!
+            </p>
+            <Link href="/admin/events/new" passHref>
+              <Button
+                className="flex mt-4 items-center bg-sky-600 hover:bg-sky-700 text-white text-2xl px-6 py-3 rounded-lg shadow-lg cursor-pointer transition-transform hover:scale-110"
+                type="button"
+              >
+                <Plus className="w-6 h-6 mr-2" />
+                Create Event
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </motion.div> */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="flex justify-between items-start mb-8"
+      >
+        <div>
+          <h1 className="text-3xl font-bold mb-1 text-white">Manage Events</h1>
+          <p className="text-gray-200 underline underline-offset-4 mb-2">
+            Create, edit, and manage your events
+          </p>
+        </div>
+        <div className="flex flex-row mr-4 items-end max-w-md text-right">
+          <p className="text-white mr-4 text-lg font-semibold italic">
+            Your perfect event, just a few clicks away!!
+          </p>
+          <Link href="/admin/events/new" passHref>
+            <Button
+              className="flex mt-4 items-center  bg-indigo-600 hover:bg-green-700 text-white text-3xl pr-4 py-6 rounded-lg shadow-lg cursor-pointer transition-transform hover:scale-110"
+              type="button"
+            >
+              <Plus className="w-16 h-16  " />
+              Create Event
+            </Button>
+          </Link>
+        </div>
       </motion.div>
 
       {/* Status Filters */}
@@ -99,23 +160,42 @@ export default function AdminEventsPageClient({
             transition={{ duration: 0.6, delay: index * 0.1 }}
           >
             <Card>
-              <CardContent className="p-6">
-                <div className="flex justify-between items-start">
+              <CardContent className="p-6 bg-gray-900">
+                <div className="flex justify-between  items-start">
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-xl font-semibold">{event.title}</h3>
+                    <div className="flex items-center  gap-3 mb-2  p-4 rounded-lg">
+                      <h3 className="text-4xl font-semibold underline  underline-offset-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        {event.title}
+                      </h3>
                       <Badge
                         variant={getStatusColor(event.status)}
-                        className="capitalize"
+                        className={`capitalize text-sm ${
+                          event.status === "upcoming"
+                            ? "text-green-600 border-green-600"
+                            : event.status === "completed"
+                            ? "text-red-600 border-red-600"
+                            : "text-blue-600 border-red-600"
+                        }`}
                       >
                         {event.status}
                       </Badge>
-                      <Badge variant="outline">{event.category}</Badge>
+                      <p>Category:</p>
+                      <Badge
+                        variant="outline"
+                        className="border border-yellow-500 text-yellow-400 text-sm"
+                      >
+                        {event.category}
+                      </Badge>
+                      <div>
+                        <span className="font-medium border border-gray-300 text-gray-200 text-sm rounded-lg px-2 py-1">
+                          Seats-Left: {event.capacity - event.bookedSeats}
+                        </span>
+                      </div>
                     </div>
 
-                    <p className="text-gray-600 mb-3">{event.description}</p>
+                    <p className="text-gray-200 mb-3">{event.description}</p>
 
-                    <div className="grid md:grid-cols-4 gap-4 text-sm text-gray-500">
+                    <div className="grid md:grid-cols-4 gap-4 text-sm text-gray-300">
                       <div>
                         <span className="font-medium">Date:</span>{" "}
                         {formatDate(new Date(event.date))}
@@ -128,8 +208,9 @@ export default function AdminEventsPageClient({
                         {event.location}
                       </div>
                       <div>
-                        <span className="font-medium">Capacity:</span>{" "}
-                        {event.bookedSeats}/{event.capacity}
+                        <span className="font-medium">
+                          Capacity: {event.capacity}
+                        </span>{" "}
                       </div>
                     </div>
                   </div>
