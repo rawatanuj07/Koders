@@ -1,8 +1,10 @@
 # EventEase – Event Booking Platform
 
 A full-stack event booking platform built with Next.js.
-Live Hosted Link: https://koders-nextjs.vercel.app/
-admin-role: username- bat password:qwert
+
+## Live Hosted Link: https://koders-nextjs.vercel.app/
+
+# adminRole- username: bat password:qwert
 
 ## 🚀 Installation
 
