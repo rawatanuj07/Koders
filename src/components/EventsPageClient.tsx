@@ -9,6 +9,7 @@ import { Modal } from "@/components/Modal";
 import { Button } from "@/components/ui/button";
 import type { Event } from "@/lib/types";
 import { useUserStore } from "@/store/userStore";
+import { useRouter } from "next/navigation";
 
 export interface EventsPageClientProps {
   initialEvents: Event[];
@@ -23,6 +24,7 @@ export default function EventsPageClient({
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [seatsToBook, setSeatsToBook] = useState(1);
+  const router = useRouter();
 
   // Date range filter state
   const [startDate, setStartDate] = useState("");
@@ -85,7 +87,8 @@ export default function EventsPageClient({
   // Confirm booking API call
   const handleConfirmBooking = async () => {
     if (!selectedEvent || !user) {
-      alert("Event or user not found.");
+      alert("Event or user not found. Kindly login!");
+      router.push("/login");
       return;
     }
 
@@ -161,7 +164,7 @@ export default function EventsPageClient({
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mb-6"
             >
-              <p className="text-gray-600">
+              <p className="text-white">
                 Showing {filteredEvents.length} event
                 {filteredEvents.length !== 1 ? "s" : ""}
               </p>
@@ -186,10 +189,10 @@ export default function EventsPageClient({
                 animate={{ opacity: 1 }}
                 className="text-center py-12"
               >
-                <p className="text-gray-500 text-lg">
+                <p className="text-pink-500 mt-8 inline-block p-4 text-4xl">
                   No events found matching your criteria.
                 </p>
-                <p className="text-gray-400 mt-2">
+                <p className="text-gray-400 border border-gray-300 rounded-xl mt-8 inline-block p-4 text-4xl">
                   Try adjusting your filters or search terms.
                 </p>
               </motion.div>

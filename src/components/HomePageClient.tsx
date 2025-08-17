@@ -337,7 +337,7 @@ export default function HomePageClient({ user }: HomePageClientProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-gray-1000 via-purple-900 to-red-800 text-white">
+      <section className="py-6 px-4 bg-gradient-to-r from-gray-1000 via-purple-900 to-red-800 text-white">
         <div className="container mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -358,9 +358,13 @@ export default function HomePageClient({ user }: HomePageClientProps) {
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
+       
           </motion.div>
         </div>
+        <p className="text-center font-bold pt-12"> Created by Anuj Rawat.</p>
+
       </section>
+      
     </div>
   );
 }

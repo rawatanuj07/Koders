@@ -62,12 +62,12 @@ export function FilterBar({
     <div className="space-y-4">
       {/* Search Bar */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-100 w-5 h-5" />
         <Input
           placeholder="Search events..."
           value={searchQuery}
           onChange={handleSearch}
-          className="pl-10"
+          className="pl-10 text-gray-100"
         />
       </div>
 

@@ -13,7 +13,10 @@ import { loginUser } from "./actions";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
+  };
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated Background Elements */}
@@ -83,7 +86,11 @@ export default function LoginPage() {
           </CardHeader>
 
           <CardContent className="space-y-6">
-            <form action={loginUser} className="space-y-5">
+            <form
+              action={loginUser}
+              onSubmit={handleSubmit}
+              className="space-y-5"
+            >
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -163,10 +170,17 @@ export default function LoginPage() {
               >
                 <Button
                   type="submit"
-                  className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
+                  disabled={isLoading}
+                  className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group flex items-center justify-center"
                 >
-                  Sign In
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  {isLoading ? (
+                    "Signing in..."
+                  ) : (
+                    <>
+                      Sign In
+                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
                 </Button>
               </motion.div>
             </form>

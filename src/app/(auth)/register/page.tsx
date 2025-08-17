@@ -9,8 +9,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 // Importing server action
 import { addUser } from "./actions";
+import { useState } from "react";
 
 export default function RegisterPage() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
+  };
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated Background Elements */}
@@ -84,7 +90,11 @@ export default function RegisterPage() {
           </CardHeader>
 
           <CardContent className="space-y-6">
-            <form action={addUser} className="space-y-5">
+            <form
+              action={addUser}
+              onSubmit={handleSubmit}
+              className="space-y-5"
+            >
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -154,8 +164,14 @@ export default function RegisterPage() {
                   type="submit"
                   className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-purple-700 to-blue-700 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
                 >
-                  Create Account
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  {isLoading ? (
+                    "Creating Account..."
+                  ) : (
+                    <>
+                      Create Account
+                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
                 </Button>
               </motion.div>
             </form>

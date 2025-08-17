@@ -179,7 +179,7 @@ export default function AttendeesPageClient({
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.4, delay: index * 0.1 }}
-                      className="border-b border-gray-100 hover:bg-gray-50"
+                      className="border-b border-gray-100 hover:bg-violet-800 hover:cursor-pointer"
                     >
                       <td className="py-3 px-4">{attendee.userName}</td>
                       <td className="py-3 px-4 text-gray-200">
